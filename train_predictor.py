@@ -455,7 +455,7 @@ def parse_args() -> argparse.Namespace:
 
     # 訓練
     p.add_argument("--epochs", type=int, default=50)
-    p.add_argument("--batch-size", type=int, default=4)
+    p.add_argument("--batch-size", type=int, default=8)
     p.add_argument("--lr", type=float, default=1e-3)
     p.add_argument("--lambda1", type=float, default=0.4, help="需求損失權重")
     p.add_argument("--lambda2", type=float, default=0.3, help="空車損失權重")
