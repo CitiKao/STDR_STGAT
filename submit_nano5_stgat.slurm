@@ -35,7 +35,11 @@ mkdir -p "$RUN_DIR"
 # Avoid `ml purge` here for the same reason as create_nano5_env.sh:
 # some Nano5 shells call `conda deactivate` during purge before the conda hook
 # is initialized.
+# Disable `nounset` around `ml load` for compatibility with the site Lmod init
+# script, which may reference SLURM_JOBID directly.
+set +u
 ml load miniconda3/24.11.1
+set -u
 eval "$(conda shell.bash hook)"
 
 echo "job_id=${SLURM_JOB_ID}"

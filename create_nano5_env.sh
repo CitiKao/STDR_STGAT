@@ -6,7 +6,11 @@ ENV_NAME="${1:-sdtr-stgat-h100}"
 
 # Avoid `ml purge` here. On Nano5 it can trigger `conda deactivate` before the
 # shell hook is initialized, which leads to `Run 'conda init' before 'conda deactivate'`.
+# Also disable `nounset` around `ml load`, because the site Lmod init script
+# may reference SLURM_JOBID even on the login node.
+set +u
 ml load miniconda3/24.11.1
+set -u
 eval "$(conda shell.bash hook)"
 
 if conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
