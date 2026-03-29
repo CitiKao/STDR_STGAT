@@ -14,12 +14,21 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Under Slurm, the batch script is executed from a spool copy in /var/spool/slurmd.
+# Use the original submission directory instead of BASH_SOURCE[0].
+SCRIPT_DIR="${SLURM_SUBMIT_DIR:-$PWD}"
 ENV_NAME="${CONDA_ENV_NAME:-sdtr-stgat-h100}"
 BATCH_SIZE="${BATCH_SIZE:-16}"
 EPOCHS="${EPOCHS:-50}"
 PRECISION="${PRECISION:-bf16}"
 RUN_DIR="${SCRIPT_DIR}/runs/nano5_${SLURM_JOB_ID}"
+
+if [[ ! -f "$SCRIPT_DIR/train_predictor.py" ]]; then
+  echo "Expected train_predictor.py under $SCRIPT_DIR" >&2
+  echo "Submit this job from the project directory, for example:" >&2
+  echo "  cd /work/<your_account>/SDTR_STGAT && sbatch submit_nano5_stgat.slurm" >&2
+  exit 1
+fi
 
 mkdir -p "$RUN_DIR"
 
