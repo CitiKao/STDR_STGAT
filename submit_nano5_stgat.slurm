@@ -1,6 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=sdtr_stgat_train
 #SBATCH --partition=normal
+#SBATCH --account=ACD114200
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --gpus-per-node=1
