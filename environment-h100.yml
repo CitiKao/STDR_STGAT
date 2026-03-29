@@ -1,0 +1,16 @@
+name: sdtr-stgat-h100
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip>=24
+  - setuptools>=68
+  - wheel
+  - pytorch>=2.4
+  - pytorch-cuda=12.1
+  - numpy>=1.24
+  - pandas>=2.0
+  - pyarrow>=14.0
