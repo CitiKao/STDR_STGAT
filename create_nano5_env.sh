@@ -19,9 +19,14 @@ else
   conda create -n "$ENV_NAME" python=3.10 -y
 fi
 
-conda run -n "$ENV_NAME" conda install -c defaults "intel-openmp<2024" "mkl<2024" -y
-conda run -n "$ENV_NAME" conda install -c pytorch -c nvidia pytorch pytorch-cuda=12.1 -y
-conda run -n "$ENV_NAME" pip install numpy pandas pyarrow
+echo "[1/3] Installing MKL runtime dependencies..."
+conda install -n "$ENV_NAME" -c defaults "intel-openmp<2024" "mkl<2024" -y
+
+echo "[2/3] Installing PyTorch + CUDA 12.1..."
+conda install -n "$ENV_NAME" -c pytorch -c nvidia pytorch pytorch-cuda=12.1 -y
+
+echo "[3/3] Installing Python packages..."
+conda run --no-capture-output -n "$ENV_NAME" python -m pip install numpy pandas pyarrow
 
 echo "Environment '$ENV_NAME' is ready."
 echo "You can now submit with:"
