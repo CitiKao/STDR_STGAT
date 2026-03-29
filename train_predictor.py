@@ -51,8 +51,19 @@ def resolve_precision(device: torch.device, precision_arg: str) -> str:
 def resolve_num_workers(requested: int, device: torch.device) -> int:
     if requested >= 0:
         return requested
+    slurm_cpus_per_task = os.environ.get("SLURM_CPUS_PER_TASK")
+    if slurm_cpus_per_task:
+        try:
+            available_cpus = max(int(slurm_cpus_per_task), 1)
+        except ValueError:
+            available_cpus = os.cpu_count() or 1
+    else:
+        try:
+            available_cpus = len(os.sched_getaffinity(0))
+        except AttributeError:
+            available_cpus = os.cpu_count() or 1
     if device.type == "cuda":
-        return min(8, os.cpu_count() or 1)
+        return min(4, available_cpus)
     return 0
 
 

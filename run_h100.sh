@@ -8,5 +8,5 @@ python "$SCRIPT_DIR/train_predictor.py" \
   --log-dir "$SCRIPT_DIR/runs" \
   --device auto \
   --precision bf16 \
-  --batch-size 16 \
+  --batch-size 4 \
   "$@"

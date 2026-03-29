@@ -18,7 +18,7 @@ set -euo pipefail
 # Use the original submission directory instead of BASH_SOURCE[0].
 SCRIPT_DIR="${SLURM_SUBMIT_DIR:-$PWD}"
 ENV_NAME="${CONDA_ENV_NAME:-sdtr-stgat-h100}"
-BATCH_SIZE="${BATCH_SIZE:-16}"
+BATCH_SIZE="${BATCH_SIZE:-4}"
 EPOCHS="${EPOCHS:-50}"
 PRECISION="${PRECISION:-bf16}"
 RUN_DIR="${SCRIPT_DIR}/runs/nano5_${SLURM_JOB_ID}"
