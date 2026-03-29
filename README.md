@@ -9,7 +9,6 @@
 - `data_loader.py`
 - `environment-h100.yml`
 - `create_nano5_env.sh`
-- `job.sb`
 - `submit_nano5_stgat.slurm`
 - `run_h100.sh`
 - `data/`
@@ -56,7 +55,7 @@ sbatch -A <PROJECT_ID> submit_nano5_stgat.slurm
 如果你習慣傳統檔名，也可以直接：
 
 ```bash
-sbatch -A <PROJECT_ID> job.sb
+sbatch -A <PROJECT_ID> submit_nano5_stgat.slurm
 ```
 
 預設會用 `normal` partition、1 個節點、1 張 H100。
