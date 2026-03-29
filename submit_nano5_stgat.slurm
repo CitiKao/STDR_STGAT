@@ -32,7 +32,9 @@ fi
 
 mkdir -p "$RUN_DIR"
 
-ml purge
+# Avoid `ml purge` here for the same reason as create_nano5_env.sh:
+# some Nano5 shells call `conda deactivate` during purge before the conda hook
+# is initialized.
 ml load miniconda3/24.11.1
 eval "$(conda shell.bash hook)"
 
