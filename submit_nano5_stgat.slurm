@@ -34,6 +34,7 @@ mkdir -p "$RUN_DIR"
 
 ml purge
 ml load miniconda3/24.11.1
+eval "$(conda shell.bash hook)"
 
 echo "job_id=${SLURM_JOB_ID}"
 echo "job_node_list=${SLURM_JOB_NODELIST}"
@@ -43,6 +44,13 @@ echo "env_name=${ENV_NAME}"
 echo "batch_size=${BATCH_SIZE}"
 echo "epochs=${EPOCHS}"
 echo "precision=${PRECISION}"
+
+if ! conda env list | awk '{print $1}' | grep -qx "$ENV_NAME"; then
+  echo "Conda environment '$ENV_NAME' was not found." >&2
+  echo "On the Nano5 login node, run:" >&2
+  echo "  cd $SCRIPT_DIR && bash create_nano5_env.sh" >&2
+  exit 1
+fi
 
 conda run -n "$ENV_NAME" python "$SCRIPT_DIR/train_predictor.py" \
   --data-dir "$SCRIPT_DIR/data" \

@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_NAME="${1:-sdtr-stgat-h100}"
 
-# On Nano5, an already-loaded miniconda module may make `ml purge` call
-# `conda deactivate`. Initialize the shell hook first when possible so the
-# script does not require the user to run `conda init` manually.
-if command -v conda >/dev/null 2>&1; then
-  eval "$(conda shell.bash hook 2>/dev/null)" || true
-fi
-
-ml purge
+# Avoid `ml purge` here. On Nano5 it can trigger `conda deactivate` before the
+# shell hook is initialized, which leads to `Run 'conda init' before 'conda deactivate'`.
 ml load miniconda3/24.11.1
 eval "$(conda shell.bash hook)"
 
@@ -26,4 +21,5 @@ conda run -n "$ENV_NAME" pip install numpy pandas pyarrow
 
 echo "Environment '$ENV_NAME' is ready."
 echo "You can now submit with:"
-echo "  sbatch -A <PROJECT_ID> submit_nano5_stgat.slurm"
+echo "  cd $SCRIPT_DIR"
+echo "  sbatch submit_nano5_stgat.slurm"
